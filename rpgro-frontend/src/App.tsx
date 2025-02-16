@@ -1,4 +1,4 @@
-import { Tldraw, TLComponents, TLUiOverrides, useIsToolSelected, DefaultToolbar, DefaultToolbarContent, useTools, TldrawUiMenuItem} from 'tldraw'
+import { Editor, Tldraw, TLComponents, TLUiOverrides, useIsToolSelected, DefaultToolbar, DefaultToolbarContent, useTools, TldrawUiMenuItem} from 'tldraw'
 import 'tldraw/tldraw.css'
 import { CardShapeUtil } from './CardShapeUtil'
 import { CardShapeTool } from './CardShapeTool'
@@ -23,6 +23,10 @@ const customUIOverrides: TLUiOverrides =
     }
   }
 };
+
+const handleMount = (editor: Editor) => {
+  editor.user.updateUserPreferences({isSnapMode: true});
+}
 
 function CustomToolbar()
 {
@@ -50,6 +54,7 @@ export default function App() {
       overrides={customUIOverrides}
       components={customComponents}
       initialState='card'
+      onMount={handleMount}
       />
 		</div>
 	)

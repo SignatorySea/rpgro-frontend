@@ -1,4 +1,5 @@
 import {
+	BoundsSnapGeometry,
 	Geometry2d,
 	HTMLContainer,
 	RecordProps,
@@ -37,7 +38,16 @@ export class CardShapeUtil extends ShapeUtil<ICardShape> {
 			text: "I'm a card!",
 		}
 	}
-
+	override getBoundsSnapGeometry(shape: ICardShape): BoundsSnapGeometry 
+	{
+		return new Rectangle2d(
+			{
+				width: shape.props.h / 2,
+				height: shape.props.w / 2,
+				isFilled: true
+			}
+		)
+	}
 	// [c]
 	canEdit() {
 		return false
@@ -65,7 +75,19 @@ export class CardShapeUtil extends ShapeUtil<ICardShape> {
 
 	// [f]
 	component(shape: ICardShape) {
-		return <HTMLContainer style={{ backgroundColor: '#efefef' }}>{shape.props.text}</HTMLContainer>
+		return <HTMLContainer style={{ backgroundColor: '#efefef' }}>
+			<span style={{position: 'absolute',
+				top: 0,
+				left: 0,
+				display: 'flex',
+				justifyContent: 'center',
+				alignItems: 'center',
+				height: shape.props.h/2,
+				width: shape.props.w/2
+			}}>
+			{shape.props.text}
+			</span>
+			</HTMLContainer>
 	}
 
 	// [g]
