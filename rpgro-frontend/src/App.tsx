@@ -2,9 +2,11 @@ import { Editor, Tldraw, TLComponents, TLUiOverrides, useIsToolSelected, Default
 import 'tldraw/tldraw.css'
 import { CardShapeUtil } from './CardShapeUtil'
 import { CardShapeTool } from './CardShapeTool'
+import { CardGroupShapeTool } from './CardGroupShapeTool'
+import { CardGroupShapeUtil } from './CardGroupShapeUtil'
 
-const customShapes = [CardShapeUtil];
-const customTools = [CardShapeTool];
+const customShapes = [CardShapeUtil, CardGroupShapeUtil];
+const customTools = [CardShapeTool, CardGroupShapeTool];
 const customUIOverrides: TLUiOverrides = 
 {
   tools: (editor, tools) => {
@@ -19,6 +21,16 @@ const customUIOverrides: TLUiOverrides =
         {
           editor.setCurrentTool('card')
         }
+      },
+      cardgroup: {
+        id: 'cardgroup',
+        label: 'Card Group',
+        icon: '',
+        kbd: '',
+        onSelect()
+        {
+          editor.setCurrentTool('cardgroup')
+        }
       }
     }
   }
@@ -31,10 +43,12 @@ const handleMount = (editor: Editor) => {
 function CustomToolbar()
 {
   const tools = useTools();
-  const isCarddselected = useIsToolSelected(tools['card']);
+  const isCardSelected = useIsToolSelected(tools['card']);
+  const isCardGroupSelected = useIsToolSelected(tools['cardgroup']);
   return (
     <DefaultToolbar>
-      <TldrawUiMenuItem {...tools['card']} isSelected={isCarddselected} />
+      <TldrawUiMenuItem {...tools['card']} isSelected={isCardSelected} />
+      <TldrawUiMenuItem {...tools['cardgroup']} isSelected={isCardGroupSelected} />
       <DefaultToolbarContent />
     </DefaultToolbar>
   )
