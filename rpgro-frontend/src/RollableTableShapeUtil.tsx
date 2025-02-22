@@ -73,7 +73,7 @@ export class RollableTableShapeUtil extends ShapeUtil<IRollableTableShape> {
 
     // [f]
     component(shape: IRollableTableShape) {
-        return <HTMLContainer style={{ backgroundColor: '#efefef' }}>
+        return <HTMLContainer >
             <span style={{position: 'absolute',
                 top: 0,
                 left: 0,
@@ -81,9 +81,10 @@ export class RollableTableShapeUtil extends ShapeUtil<IRollableTableShape> {
                 justifyContent: 'center',
                 alignItems: 'center',
                 height: shape.props.h/2,
-                width: shape.props.w/2
+                width: shape.props.w/2,
+                pointerEvents: 'all'
             }}>
-            <RollableTable />
+            <RollableTable reportResult={this.GetResultCard} editor={this.editor}/>
             </span>
             </HTMLContainer>
     }
@@ -91,5 +92,15 @@ export class RollableTableShapeUtil extends ShapeUtil<IRollableTableShape> {
     // [g]
     indicator(shape: IRollableTableShape) {
         return <rect width={shape.props.w} height={shape.props.h} />
+    }
+
+    GetResultCard(editor: Editor, result: string)
+    {
+        console.log(result);
+        editor.createShape({type: 'card-shape', 
+                    x: 0, 
+                    y: 0,
+                    props: {text: result}
+                })
     }
 }

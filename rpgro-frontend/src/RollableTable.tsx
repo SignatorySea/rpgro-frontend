@@ -1,19 +1,23 @@
+import { Button } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import { useState } from 'react';
+import { words } from './loremipsumDeck';
 
 
-type Person =
+type Data =
 {
-    firstName: string
-    lastName: string
-    age: number
+    word: string
 }
 
-const defaultData: Person[] = 
+let data: Data[] = words.map((x) => {return {word: x}});
+data = data.slice(0, 10);
+
+/*const defaultData: Person[] = 
 [
     {
         firstName: 'Tanner',
@@ -30,28 +34,34 @@ const defaultData: Person[] =
         lastName: 'Dirte',
         age: 45
     }
-];
+];*/
 
 
-
-export  function RollableTable()
+function Roll(data: Data[], setter)
 {
+    const value = Math.floor(Math.random()*data.length);
+    setter(value);
+    return value;
+}
+
+
+export  function RollableTable({reportResult, editor})
+{
+    const [roll, setRoll] = useState(-1);
+
     return (
         <TableContainer>
+            <Button variant="contained" onClick={()=>{reportResult(editor, data[Roll(data, setRoll)].word)}}>Roll</Button>
             <Table>
                 <TableHead>
                     <TableRow>
-                        <TableCell>First Name</TableCell>
-                        <TableCell>Last Name</TableCell>
-                        <TableCell>Age</TableCell>
+                        <TableCell>Result</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {defaultData.map((row => (
-                        <TableRow key={row.firstName}>
-                            <TableCell>{row.firstName}</TableCell>
-                            <TableCell>{row.lastName}</TableCell>
-                            <TableCell>{row.age}</TableCell>
+                    {data.map(((row, index) => (
+                        <TableRow key={index} selected={index===roll ? true : false}>
+                            <TableCell>{row.word}</TableCell>
                         </TableRow>
                     )))}
                 </TableBody>
