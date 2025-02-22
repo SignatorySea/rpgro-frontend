@@ -7,9 +7,11 @@ import {
 	TLBaseShape,
 	TLShape,
 	T,
-    resizeBox
+    resizeBox,
+    TLResizeInfo
 } from 'tldraw'
 import 'tldraw/tldraw.css'
+
 
 type CardGroupShape = TLBaseShape<
 	'cardgroup-shape',
@@ -42,6 +44,11 @@ export class CardGroupShapeUtil extends ShapeUtil<CardGroupShape>
             height: shape.props.h,
             isFilled: true
         })
+    }
+
+    canEdit()
+    {
+        return false;
     }
 
     override canResize()
@@ -91,4 +98,8 @@ export class CardGroupShapeUtil extends ShapeUtil<CardGroupShape>
                 />
         )
     }
+
+    indicator(shape: CardGroupShape) {
+		return <rect width={shape.props.w} height={shape.props.h} />
+	}
 }

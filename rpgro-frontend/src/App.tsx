@@ -4,9 +4,11 @@ import { CardShapeUtil } from './CardShapeUtil'
 import { CardShapeTool } from './CardShapeTool'
 import { CardGroupShapeTool } from './CardGroupShapeTool'
 import { CardGroupShapeUtil } from './CardGroupShapeUtil'
+import {RollableTableShapeUtil} from './RollableTableShapeUtil'
+import { RollabeTableShapeTool } from './RollableTableShapeTool'
 
-const customShapes = [CardShapeUtil, CardGroupShapeUtil];
-const customTools = [CardShapeTool, CardGroupShapeTool];
+const customShapes = [CardShapeUtil, CardGroupShapeUtil, RollableTableShapeUtil];
+const customTools = [CardShapeTool, CardGroupShapeTool, RollabeTableShapeTool];
 const customUIOverrides: TLUiOverrides = 
 {
   tools: (editor, tools) => {
@@ -31,6 +33,16 @@ const customUIOverrides: TLUiOverrides =
         {
           editor.setCurrentTool('cardgroup')
         }
+      },
+      rollabletable: {
+        id: 'rollabletable',
+        label: 'Rollable Table',
+        icon: '',
+        kbd: '',
+        onSelect()
+        {
+          editor.setCurrentTool('rollabletable')
+        }
       }
     }
   }
@@ -45,10 +57,12 @@ function CustomToolbar()
   const tools = useTools();
   const isCardSelected = useIsToolSelected(tools['card']);
   const isCardGroupSelected = useIsToolSelected(tools['cardgroup']);
+  const isRollableTableSelected = useIsToolSelected(tools['rollabletable']);
   return (
     <DefaultToolbar>
       <TldrawUiMenuItem {...tools['card']} isSelected={isCardSelected} />
       <TldrawUiMenuItem {...tools['cardgroup']} isSelected={isCardGroupSelected} />
+      <TldrawUiMenuItem {...tools['rollabletable']} isSelected={isRollableTableSelected} />
       <DefaultToolbarContent />
     </DefaultToolbar>
   )
@@ -71,5 +85,6 @@ export default function App() {
       onMount={handleMount}
       />
 		</div>
+    
 	)
 }
