@@ -2,7 +2,6 @@ import {StateNode} from 'tldraw';
 import 'tldraw/tldraw.css';
 
 
-const OFFSET = 12;
 
 export class RollabeTableShapeTool extends StateNode {
     static override id = 'rollabletable';
@@ -16,8 +15,8 @@ export class RollabeTableShapeTool extends StateNode {
     {
         const {currentPagePoint} = this.editor.inputs;
         this.editor.createShape({type: 'rollabletable-shape', 
-            x: currentPagePoint.x - OFFSET, 
-            y: currentPagePoint.y - OFFSET,
+            x: currentPagePoint.x, 
+            y: currentPagePoint.y,
         })
     }
 }

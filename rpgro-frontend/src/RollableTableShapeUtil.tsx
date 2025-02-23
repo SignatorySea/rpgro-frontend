@@ -9,9 +9,13 @@ import {
     TLBaseShape,
     TLResizeInfo,
     resizeBox,
+    Editor,
+    JsonObject,
+    TLShapeId,
 } from 'tldraw';
 import 'tldraw/tldraw.css';
 import { RollableTable } from './RollableTable';
+import { useState } from 'react';
 
 
 type IRollableTableShape = TLBaseShape<
@@ -19,6 +23,8 @@ type IRollableTableShape = TLBaseShape<
     {
         w: number
         h: number
+        x: number
+        y: number
     }
 >
 export class RollableTableShapeUtil extends ShapeUtil<IRollableTableShape> {
@@ -27,13 +33,17 @@ export class RollableTableShapeUtil extends ShapeUtil<IRollableTableShape> {
     static override props: RecordProps<IRollableTableShape> = {
         w: T.number,
         h: T.number,
+        x: T.number,
+        y: T.number
     }
 
     // [b]
     getDefaultProps(): IRollableTableShape['props'] {
         return {
             w: 200,
-            h: 200,
+            h: 2000,
+            x: 0,
+            y: 0
         }
     }
     override getBoundsSnapGeometry(shape: IRollableTableShape): BoundsSnapGeometry 
@@ -70,21 +80,26 @@ export class RollableTableShapeUtil extends ShapeUtil<IRollableTableShape> {
     onResize(shape: any, info: TLResizeInfo<any>) {
         return resizeBox(shape, info)
     }
+    
+    
+    onTranslateEnd(initial: IRollableTableShape, current: IRollableTableShape): void | ({ id: TLShapeId; meta?: Partial<JsonObject> | undefined; props?: Partial<{ w: number; h: number; }> | undefined; type: 'rollabletable-shape'; } & Partial<Omit<IRollableTableShape, 'props' | 'type' | 'id' | 'meta'>>) {
+    }
+
 
     // [f]
     component(shape: IRollableTableShape) {
-        return <HTMLContainer >
+        return <HTMLContainer>
             <span style={{position: 'absolute',
                 top: 0,
                 left: 0,
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                height: shape.props.h/2,
-                width: shape.props.w/2,
+                height: shape.props.h,
+                width: shape.props.w,
                 pointerEvents: 'all'
             }}>
-            <RollableTable reportResult={this.GetResultCard} editor={this.editor}/>
+            <RollableTable reportResult={this.GetResultCard} editor={this.editor} width={shape.props.w} height={shape.props.h}/>
             </span>
             </HTMLContainer>
     }
@@ -94,13 +109,13 @@ export class RollableTableShapeUtil extends ShapeUtil<IRollableTableShape> {
         return <rect width={shape.props.w} height={shape.props.h} />
     }
 
-    GetResultCard(editor: Editor, result: string)
+    GetResultCard(editor: Editor, result: string, pos: number[], width: number)
     {
-        console.log(result);
         editor.createShape({type: 'card-shape', 
-                    x: 0, 
-                    y: 0,
+                    x: width + pos[0], 
+                    y: pos[1],
                     props: {text: result}
                 })
     }
+    
 }
